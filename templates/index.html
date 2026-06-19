@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador Local</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="logo">MiBuscador</h1>
+        
+        <form action="/buscar" method="POST" class="search-form">
+            <input type="text" name="query" class="search-bar" placeholder="Busca en tus documentos..." required>
+            
+            <div class="options">
+                <label for="algoritmo">Técnica de búsqueda:</label>
+                <select name="algoritmo" id="algoritmo">
+                    <option value="vectorial">Modelo Vectorial (TF-IDF)</option>
+                    <option value="bm25">Okapi BM25</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="search-btn">Buscar</button>
+        </form>
+    </div>
+</body>
+</html>

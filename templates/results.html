@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados - MiBuscador</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Estilos estilo Google */
+        body { align-items: flex-start; padding: 20px; display: block; }
+        .header-results { display: flex; align-items: center; border-bottom: 1px solid #ebebeb; padding-bottom: 20px; margin-bottom: 20px; }
+        .logo-small { font-size: 2rem; color: #4285F4; margin: 0 30px 0 0; text-decoration: none; font-weight: bold; }
+        .search-bar-small { width: 400px; padding: 10px 15px; border-radius: 24px; border: 1px solid #dfe1e5; outline: none; }
+        .stats { color: #70757a; font-size: 0.85rem; margin-bottom: 20px; }
+        .result-item { margin-bottom: 25px; max-width: 600px; }
+        .result-url { color: #202124; font-size: 0.85rem; margin-bottom: 2px; }
+        .result-title { color: #1a0dab; font-size: 1.25rem; text-decoration: none; display: inline-block; margin-bottom: 3px; }
+        .result-title:hover { text-decoration: underline; }
+        .result-snippet { color: #4d5156; font-size: 0.875rem; line-height: 1.4; }
+        .score-badge { background-color: #e8f0fe; color: #1a73e8; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-left: 10px; }
+    </style>
+</head>
+<body>
+    <div class="header-results">
+        <a href="/" class="logo-small">MiBuscador</a>
+        <form action="/buscar" method="POST">
+            <input type="text" name="query" class="search-bar-small" value="{{ query }}">
+            <input type="hidden" name="algoritmo" value="{{ algoritmo }}">
+            <button type="submit" class="search-btn" style="padding: 9px 15px;">Buscar</button>
+        </form>
+    </div>
+
+    <div class="stats">
+        Se encontraron {{ resultados|length }} resultados usando la técnica: <strong>{{ algoritmo|upper }}</strong>.
+    </div>
+
+    <div class="results-container">
+        {% if resultados %}
+            {% for res in resultados %}
+                <div class="result-item">
+                    <div class="result-url">localhost/documento/{{ res.titulo }}</div>
+                    
+                    <a href="/documento/{{ res.titulo }}?query={{ query }}" class="result-title" target="_blank">
+                        {{ res.titulo }}
+                        <span class="score-badge">Similitud: {{ res.score }}</span>
+                    </a>
+
+                    <div class="result-snippet">
+                        {{ res.snippet }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="result-item">
+                <p>No se encontraron documentos que coincidan con tu búsqueda.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

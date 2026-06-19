@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizando: {{ titulo }}</title>
+    <!-- Importamos el mismo estilo base para no perder la fuente -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Estilos específicos para la pantalla de lectura */
+        body { padding: 40px; display: block; align-items: flex-start; background-color: #f8f9fa; }
+        .doc-container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background-color: white; 
+            padding: 40px; 
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        .header-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ebebeb; padding-bottom: 15px; margin-bottom: 25px; }
+        .doc-title { color: #202124; margin: 0; font-size: 1.8rem; }
+        .back-btn { 
+            display: inline-block; 
+            color: #5f6368; 
+            text-decoration: none; 
+            font-size: 0.9rem;
+            padding: 8px 15px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            background-color: white;
+        }
+        .back-btn:hover { background-color: #f1f3f4; }
+        .search-info { font-size: 0.9rem; color: #1a73e8; margin-top: 5px; }
+        .doc-content { 
+            line-height: 1.8; 
+            font-size: 1.15rem; 
+            color: #3c4043;
+            text-align: justify;
+        }
+    </style>
+</head>
+<body>
+    <div class="doc-container">
+        <div class="header-top">
+            <div>
+                <h1 class="doc-title">{{ titulo }}</h1>
+                {% if query %}
+                <div class="search-info">Resaltando coincidencias para: "<strong>{{ query }}</strong>"</div>
+                {% endif %}
+            </div>
+            <!-- Botón para cerrar la pestaña y volver atrás -->
+            <a href="javascript:window.close();" class="back-btn">Cerrar pestaña ✖</a>
+        </div>
+
+        <!-- El filtro "| safe" es vital aquí para que Flask permita insertar nuestro <mark> amarillo en el texto -->
+        <div class="doc-content">
+            {{ contenido | safe }}
+        </div>
+    </div>
+</body>
+</html>
